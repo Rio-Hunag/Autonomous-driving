@@ -24,11 +24,11 @@ class VehicleConfig:
     max_lane_error_for_motion: float = 0.98
 
     # PID output is a steering-angle correction in degrees.
-    pid_kp: float = 28.0
+    pid_kp: float = 90.0
     pid_ki: float = 0.0
-    pid_kd: float = 3.5
-    pid_max_correction_deg: float = 25.0
-    pid_integral_limit: float = 1.0
+    pid_kd: float = 1.5
+    pid_max_correction_deg: float = 40.0
+    pid_integral_limit: float = 2.0
 
     # Serial connection to the Arduino
     serial_baudrate: int = 115200
