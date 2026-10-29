@@ -1,226 +1,101 @@
-# Autonomous Driving System
+<p align="center">
+  <img
+    src="https://capsule-render.vercel.app/api?type=waving&color=0:141E30,50:243B55,100:3A6073&height=210&section=header&text=Autonomous%20Driving&fontSize=38&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Computer%20Vision%20%7C%20PID%20Control%20%7C%20Hardware%20Integration&descAlignY=60&descSize=13"
+    width="100%"
+    alt="Autonomous Driving Project Banner"
+  />
+</p>
 
-A Raspberry Pi and Arduino-based autonomous driving prototype that combines camera-based lane detection, PID steering control, ultrasonic obstacle detection, and serial communication.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" alt="OpenCV" />
+  <img src="https://img.shields.io/badge/Raspberry%20Pi-C51A4A?style=for-the-badge&logo=raspberrypi&logoColor=white" alt="Raspberry Pi" />
+  <img src="https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white" alt="Arduino" />
+  <img src="https://img.shields.io/badge/License-MIT-3A6073?style=for-the-badge" alt="MIT License" />
+</p>
 
-## Overview
+<p align="center">
+  <b>A physical autonomous vehicle prototype integrating computer vision, steering control, and embedded hardware.</b>
+  <br />
+  Built with Raspberry Pi, Arduino, OpenCV, and a PID controller.
+</p>
 
-This project integrates computer vision and embedded control to implement lane-following behavior on a physical vehicle platform.
+<p align="center">
+  <a href="#-key-features">Features</a> ·
+  <a href="#-system-architecture">Architecture</a> ·
+  <a href="#-getting-started">Getting Started</a> ·
+  <a href="#-testing-and-validation">Testing</a>
+</p>
 
-The Raspberry Pi processes camera frames to detect lane boundaries and calculates steering corrections using a PID controller. It communicates with an Arduino over serial, while the Arduino handles steering servo control, motor output, and ultrasonic distance monitoring.
+---
 
-## Features
+## 🚗 Project Overview
 
-- **Lane Detection:** Uses OpenCV image processing, Canny edge detection, and probabilistic Hough line detection to identify lane boundaries.
-- **PID Steering Control:** Calculates steering corrections from the detected lane-center offset.
-- **Obstacle Detection:** Uses an HC-SR04 ultrasonic sensor to measure distance ahead of the vehicle.
-- **Arduino Motor Control:** Controls motor output through an L298N motor driver.
-- **Serial Communication:** Exchanges steering, throttle, and distance data between the Raspberry Pi and Arduino.
-- **Safety Stop Logic:** Stops motor output when an obstacle is too close, sensor readings are invalid or stale, lane detection is lost, or commands time out.
-- **Unit Testing:** Includes tests for PID output direction, output clamping, and controller reset behavior.
-- **Simulation Mode:** Supports a software simulation mode for checking the camera-processing and control pipeline without actuating the vehicle.
+This project integrates camera-based lane detection, PID steering control, ultrasonic obstacle detection, and serial communication to implement lane-following behavior on a physical vehicle.
 
-## System Architecture
+The Raspberry Pi processes camera frames and calculates steering commands. An Arduino receives these commands and controls the steering servo and motor output while monitoring ultrasonic distance measurements.
 
-```text
-Camera
-  |
-  v
-Raspberry Pi
-  |
-  +--> OpenCV Lane Detection
-  |         |
-  |         v
-  |     Lane Position Error
-  |         |
-  |         v
-  |      PID Control
-  |         |
-  |         v
-  +---- Serial Commands --------+
-                                |
-                                v
-                             Arduino
-                                |
-                 +--------------+--------------+
-                 |              |              |
-                 v              v              v
-             Servo Motor    Motor Driver   Ultrasonic
-                               (L298N)       Sensor
-                 |              |              |
-                 v              v              |
-              Steering       Vehicle Motion    |
-                                                |
-                         Distance Telemetry <---+
-                                |
-                                v
-                           Raspberry Pi
-```
+The project focuses on connecting software components with physical hardware, including control logic, communication protocols, testing, and stop conditions.
 
-## Hardware Components
+## ✨ Key Features
 
-The following components are referenced by the current source code. Confirm that the list matches the hardware used in your physical tests.
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>👁️ Computer Vision</h3>
+      <p>OpenCV-based lane detection using grayscale conversion, Gaussian blur, Canny edge detection, and probabilistic Hough line detection.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🎯 PID Steering Control</h3>
+      <p>Calculates a normalized lane-center error and uses PID control to generate bounded steering corrections.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>📡 Hardware Communication</h3>
+      <p>Exchanges steering commands, throttle values, and ultrasonic distance telemetry between the Raspberry Pi and Arduino over serial.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🛡️ Stop Conditions</h3>
+      <p>Implements stop logic for nearby obstacles, invalid or stale sensor readings, lost lane detection, excessive lane error, and communication timeouts.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🔧 Embedded Control</h3>
+      <p>Uses Arduino firmware to control the steering servo, motor driver, and HC-SR04 ultrasonic sensor.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🧪 Testing & Simulation</h3>
+      <p>Includes PID unit tests and a software simulation mode for examining the camera-processing and control pipeline without actuating the vehicle.</p>
+    </td>
+  </tr>
+</table>
 
-| Component | Purpose |
-|---|---|
-| Raspberry Pi | Image processing and high-level control |
-| Arduino board | Motor, steering, and sensor control |
-| Camera | Captures images for lane detection |
-| HC-SR04 ultrasonic sensor | Measures obstacle distance |
-| L298N motor driver | Drives the vehicle motors |
-| Steering servo | Adjusts steering direction |
-| Vehicle chassis and motors | Physical vehicle platform |
+---
 
-## Software Requirements
+## 🧭 System Architecture
 
-- Python 3.9 or later
-- NumPy
-- OpenCV
-- pySerial
-- Arduino IDE or a compatible Arduino build environment
+The system separates image processing and high-level control from low-level hardware control.
 
-Install the Python dependencies:
+```mermaid
+flowchart TD
+    CAM["Camera"] --> PI["Raspberry Pi"]
+    PI --> CV["OpenCV Lane Detection"]
+    CV --> ERR["Lane-Center Error"]
+    ERR --> PID["PID Steering Controller"]
+    PID --> CMD["Serial Command<br/>C, steering, throttle"]
+    CMD --> ARD["Arduino Firmware"]
 
-```bash
-pip install -r requirements.txt
-```
+    ARD --> SERVO["Steering Servo"]
+    ARD --> MOTOR["L298N Motor Driver"]
+    MOTOR --> VEHICLE["Vehicle Motion"]
 
-## Project Structure
+    SONAR["HC-SR04 Ultrasonic Sensor"] --> ARD
+    ARD --> TEL["Distance Telemetry<br/>S, distance_cm"]
+    TEL --> PI
 
-```text
-Autonomous-driving/
-├── README.md
-├── main.py
-├── requirements.txt
-├── autocar/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── pid.py
-│   ├── lane_detector.py
-│   └── arduino_link.py
-├── arduino/
-│   └── autonomous_car/
-│       └── autonomous_car.ino
-└── tests/
-    └── test_pid.py
-```
-
-## Configuration
-
-Control parameters are centralized in `autocar/config.py`, including:
-
-- Camera resolution and region of interest
-- Steering center and angle limits
-- Cruise throttle
-- Minimum obstacle distance
-- Sensor timeout
-- PID gains and output limits
-- Serial baud rate and startup delay
-
-Review the configuration against the actual hardware before operating the vehicle. Steering direction, servo limits, and motor behavior may vary between chassis.
-
-## Serial Communication Protocol
-
-The Raspberry Pi and Arduino communicate using newline-delimited ASCII messages at 115200 baud.
-
-### Raspberry Pi to Arduino
-
-```text
-C,<steering_degrees>,<throttle>
-```
-
-Example:
-
-```text
-C,90,100
-```
-
-The fields represent the requested steering angle and throttle value.
-
-### Arduino to Raspberry Pi
-
-```text
-S,<distance_cm>
-```
-
-Example:
-
-```text
-S,42.5
-```
-
-An invalid ultrasonic reading is reported as:
-
-```text
-S,-1
-```
-
-The Arduino independently checks command freshness and ultrasonic readings before enabling motor output.
-
-## Running the Application
-
-### 1. Simulation Mode
-
-To run without connecting to the Arduino or sending motor commands:
-
-```bash
-python main.py --simulate --camera 0
-```
-
-Replace `0` with the appropriate camera index if necessary.
-
-Simulation mode still uses the camera-processing pipeline. It does not simulate the full physical vehicle dynamics or prove that the vehicle can follow lanes successfully.
-
-### 2. Hardware Mode
-
-Connect the camera and Arduino, verify the serial port, and review all hardware settings before running:
-
-```bash
-python main.py --port /dev/ttyACM0 --camera 0
-```
-
-On Windows, the Arduino port may look like `COM3`. Use the port assigned to your device.
-
-For headless operation without the OpenCV preview window:
-
-```bash
-python main.py --port /dev/ttyACM0 --camera 0 --headless
-```
-
-**Safety:** Perform initial motor tests with the drive wheels lifted, keep a physical power disconnect within reach, and verify the emergency stopping behavior before driving the vehicle on the ground.
-
-## Testing
-
-Run the available PID unit tests from the repository root:
-
-```bash
-python -m unittest discover -s tests -v
-```
-
-The current PID tests cover:
-
-- Expected output sign for positive and negative errors
-- Output clamping at configured limits
-- Resetting the controller's derivative history
-
-These tests cover selected software behavior only. They do not constitute a complete hardware integration or vehicle performance test.
-
-## Hardware Integration and Validation
-
-The project was integrated with a physical vehicle platform. The reported verification activities include Arduino firmware execution, serial communication between the connected components, and physical lane-following tests.
-
-The lane-following result applies to the hardware configuration and test conditions used during testing. It does not establish reliable performance under all lighting conditions, lane markings, surfaces, speeds, or environments.
-
-The software includes stop conditions for obstacles, invalid or stale sensor readings, and loss of lane detection. These mechanisms should not be interpreted as a guarantee of safety under every possible hardware failure.
-
-For reproducibility, record the actual hardware configuration, wiring, software versions, test conditions, and observed results. Report only tests that were performed and results that were observed.
-
-## Limitations and Future Improvements
-
-Potential areas for further development include:
-
-- More robust lane detection under varying lighting and lane-marking conditions
-- Improved handling of partial or missing lane boundaries
-- Additional unit and integration tests
-- Logging of steering commands, sensor measurements, and stop events
-- Quantitative evaluation of lane-following performance
-- More comprehensive fault handling and hardware safety validation
+    style PI fill:#243B55,color:#ffffff,stroke:#3A6073
+    style ARD fill:#243B55,color:#ffffff,stroke:#3A6073
+    style PID fill:#176B67,color:#ffffff,stroke:#2D9C91
+    style VEHICLE fill:#3A6073,color:#ffffff,stroke:#141E30
