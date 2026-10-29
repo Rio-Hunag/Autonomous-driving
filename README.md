@@ -29,7 +29,7 @@
 
 ---
 
-## 🚗 Project Overview
+##  Project Overview
 
 This project integrates camera-based lane detection, PID steering control, ultrasonic obstacle detection, and serial communication to implement lane-following behavior on a physical vehicle.
 
@@ -37,26 +37,26 @@ The Raspberry Pi processes camera frames and calculates steering commands. An Ar
 
 The project focuses on connecting software components with physical hardware, including control logic, communication protocols, testing, and stop conditions.
 
-## ✨ Key Features
+##  Key Features
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>👁️ Computer Vision</h3>
+      <h3> Computer Vision</h3>
       <p>OpenCV-based lane detection using grayscale conversion, Gaussian blur, Canny edge detection, and probabilistic Hough line detection.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>🎯 PID Steering Control</h3>
+      <h3> PID Steering Control</h3>
       <p>Calculates a normalized lane-center error and uses PID control to generate bounded steering corrections.</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>📡 Hardware Communication</h3>
+      <h3> Hardware Communication</h3>
       <p>Exchanges steering commands, throttle values, and ultrasonic distance telemetry between the Raspberry Pi and Arduino over serial.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>🛡️ Stop Conditions</h3>
+      <h3> Stop Conditions</h3>
       <p>Implements stop logic for nearby obstacles, invalid or stale sensor readings, lost lane detection, excessive lane error, and communication timeouts.</p>
     </td>
   </tr>
@@ -66,7 +66,7 @@ The project focuses on connecting software components with physical hardware, in
       <p>Uses Arduino firmware to control the steering servo, motor driver, and HC-SR04 ultrasonic sensor.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>🧪 Testing & Simulation</h3>
+      <h3> Testing & Simulation</h3>
       <p>Includes PID unit tests and a software simulation mode for examining the camera-processing and control pipeline without actuating the vehicle.</p>
     </td>
   </tr>
@@ -74,7 +74,7 @@ The project focuses on connecting software components with physical hardware, in
 
 ---
 
-## 🧭 System Architecture
+##  System Architecture
 
 The system separates image processing and high-level control from low-level hardware control.
 
