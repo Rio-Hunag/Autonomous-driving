@@ -62,7 +62,7 @@ The project focuses on connecting software components with physical hardware, in
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>🔧 Embedded Control</h3>
+      <h3> Embedded Control</h3>
       <p>Uses Arduino firmware to control the steering servo, motor driver, and HC-SR04 ultrasonic sensor.</p>
     </td>
     <td width="50%" valign="top">
